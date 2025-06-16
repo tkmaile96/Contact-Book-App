@@ -5,10 +5,10 @@ let contacts = []; // array to store contact objects
 const refreshButton = document.getElementById('refresh').addEventListener("click", fetchContacts);
 
 // Add contacts button
-const addContacts = document.getElementById('addContacts').addEventListener("click", addContacts);
+const addContact = document.getElementById('addContact').addEventListener("click", addContacts);
 
  //Add contacts function
-function addContacts() {
+function addContact() {
     // create a new conatct
 const newContact = {
     picture: {
@@ -79,3 +79,11 @@ function editContact(index) {
 
     displayOutput(contacts);
 }
+
+// Delete Contact function
+function deleteContact(index) {
+    if(confirm("Are you sure you to delete this contact?")) {
+        contacts.splice(index, 1);
+        displayOutput(contacts); 
+    }
+};
