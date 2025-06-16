@@ -14,6 +14,23 @@
     <button id="refresh">Refresh</button>
     <button id="addContact">Add Contact</button>
 
+    <!--Contact Model-->
+    <div id="contactModel" class="modal">
+        <div class="modal-content">
+            <span id="closeModel" class="close">&times;</span>
+            <h2 id="title">Add Contact</h2>
+            <form id="contactForm">
+                <input type="hidden" id="contactIndex">
+                <input type="text" id="name" placeholder="first & last name" required> <br>
+                <input type="text" id="email" placeholder="emaail" required> <br>
+                <input type="text" id="gender" placeholder="gender" required> <br>
+                <input type="text" id="phone" placeholder="phone number" required> <br>
+                <input type="text" id="imageUrl" placeholder="Image Url" > <br>
+                <button type="submit" id="saveContact">Save Contact</button>
+            </form>
+        </div>
+    </div>
+
 
 
    <script src="./index.js"></script>
