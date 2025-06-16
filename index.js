@@ -1,18 +1,35 @@
 
 let contacts = []; // array to store contact objects
 
-// refresh button
-const refreshButton = document.getElementById('refresh').addEventListener("click", fetchContacts);
+// helper function to save on local storage
+function saveContacts() {
+    localStorage.setItem("contacts", JSON.stringify(contacts));
+}
 
+function loadContacts() {
+    const saved = localStorage.getItem("contacts");
+    if (saved) {
+        contacts = JSON.parse(saved);
+        displayOutput(contacts);
+    } else {
+        fetchContacts(); // if no saved contacts, fetch from API
+    }
+};
+
+
+// ----- Event Listeners -----//
+
+// refresh button
+ document.getElementById('refresh').addEventListener("click", fetchContacts);
 // Add contacts button
-const addContact = document.getElementById('addContact').addEventListener("click", addContacts);
+ document.getElementById('addContact').addEventListener("click", addContact);
 
  //Add contacts function
 function addContact() {
-    // create a new conatct
+    // create a new contact
 const newContact = {
     picture: {
-             large:"https://picsum.photos/200/300",
+             large:"https://picsum.photos/200/300"
                },
     name: { first: "New" , last: "User"},
     gender: "male",
@@ -22,6 +39,7 @@ const newContact = {
 
 contacts.push(newContact); // add the new contact to the contacts array
 displayOutput(contacts); // display the updated contacts list
+saveContacts(); // save the updated contacts list to local storage
 
 };
 
@@ -34,8 +52,8 @@ function fetchContacts() {
     })
 
     .then(function(data) {
-        console.log(data.data); // this is the array of users
-        displayOutput(data.results);
+        contacts = data.results; // this is the array of users
+        displayOutput(contacts);
     })
     .catch(function(error) {
         console.error("Fetch error:", error);
@@ -47,7 +65,7 @@ function displayOutput(contacts) {
     let table = document.getElementById("table");
     table.innerHTML = "";
 
-    contacts.forEach(function(contact) {
+    contacts.forEach(function(contact, index) {
         let contactDiv = document.createElement("div");
         contactDiv.innerHTML = `
              <img src="${contact.picture.large}" width="50" height="50"> 
@@ -65,19 +83,20 @@ function displayOutput(contacts) {
 
 // The Edit Contact function
 function editContact(index) {
-    let newImage = document.createElement("img");
+    let newImage = prompt("Enter new image URL:", contacts[index].picture.large);
     let newName = prompt("Enter new first name:", contacts[index].name.first);
     let newGender = prompt ("Enter new gender:", contacts[index].gender);
     let newEmail = prompt ("Enter new email:", contacts[index].email);
     let newPhone = prompt ("Enter new phone:", contacts[index].phone);
 
-    if (newImage) contacts[index].img = newImage;
+    if (newImage) contacts[index].picture.large = newImage;
     if (newName) contacts[index].name.first = newName;
     if (newGender) contacts[index].gender = newGender;
     if (newEmail) contacts[index].email = newEmail;
     if (newPhone) contacts[index].phone = newPhone;
 
     displayOutput(contacts);
+    saveContacts();
 }
 
 // Delete Contact function
@@ -85,5 +104,6 @@ function deleteContact(index) {
     if(confirm("Are you sure you to delete this contact?")) {
         contacts.splice(index, 1);
         displayOutput(contacts); 
+        saveContacts();
     }
 };
